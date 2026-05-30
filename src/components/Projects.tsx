@@ -4,6 +4,9 @@ import { ArrowUpRight } from "lucide-react";
 import { projects, type Project } from "../data/projects";
 import { ProjectModal } from "./ProjectModal";
 
+// Only show non-infuguard projects here (infuguard goes to Featured Build)
+const displayProjects = projects.filter((p) => p.slug !== "infuguard");
+
 export function Projects() {
   const [selected, setSelected] = useState<Project | null>(null);
 
@@ -15,25 +18,23 @@ export function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="mb-16 flex flex-wrap items-end justify-between gap-6"
+          className="mb-16"
         >
-          <div>
-            <span className="font-mono text-xs uppercase tracking-[0.3em] text-neon">/ 04 — Projects</span>
-            <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-              Selected work,<br /><span className="text-gradient italic">selected obsessions.</span>
-            </h2>
-          </div>
+          <span className="font-mono text-xs uppercase tracking-[0.3em] text-neon">/ 04 — Projects</span>
+          <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+            Selected work,<br /><span className="text-gradient italic">selected obsessions.</span>
+          </h2>
         </motion.div>
 
-        <div className="grid gap-4 lg:grid-cols-3">
-          {projects.map((p, i) => (
+        {/* 2×2 grid */}
+        <div className="grid gap-4 sm:grid-cols-2">
+          {displayProjects.map((p, i) => (
             <motion.div
               key={p.slug}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: i * 0.08 }}
-              className={p.span ?? ""}
             >
               <button
                 onClick={() => setSelected(p)}

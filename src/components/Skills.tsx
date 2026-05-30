@@ -104,20 +104,17 @@ export function Skills() {
                 </div>
                 <h3 className="mt-6 font-display text-xl font-semibold">{s.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
-                <div className="mt-auto pt-5 flex flex-wrap gap-2.5">
+                {/* Tool logos - no frame, no background, uniform size */}
+                <div className="mt-auto pt-5 flex flex-wrap gap-3 items-center">
                   {s.tools.map((t) => (
-                    <div
+                    <img
                       key={t.name}
+                      src={t.logo}
+                      alt={t.name}
                       title={t.name}
-                      className="grid size-12 place-items-center rounded-xl border border-border bg-surface p-1.5 shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
-                    >
-                      <img
-                        src={t.logo}
-                        alt={t.name}
-                        className="size-full object-contain"
-                        loading="lazy"
-                      />
-                    </div>
+                      className="size-10 object-contain rounded-xl transition-transform hover:-translate-y-0.5"
+                      loading="lazy"
+                    />
                   ))}
                 </div>
               </div>
