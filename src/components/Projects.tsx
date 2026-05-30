@@ -1,7 +1,12 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { projects } from "../data/projects";
+import { projects, type Project } from "../data/projects";
+import { ProjectModal } from "./ProjectModal";
+
 export function Projects() {
+  const [selected, setSelected] = useState<Project | null>(null);
+
   return (
     <section id="projects" className="relative py-32">
       <div className="mx-auto max-w-6xl px-6">
@@ -28,11 +33,12 @@ export function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: i * 0.08 }}
+              className={p.span ?? ""}
             >
-
-             <div
-  className="group relative block overflow-hidden rounded-3xl glass p-1 glow-border-hover"
->
+              <button
+                onClick={() => setSelected(p)}
+                className="group relative block w-full cursor-pointer overflow-hidden rounded-3xl glass p-1 glow-border-hover text-left"
+              >
                 <div className="relative overflow-hidden rounded-[1.4rem]">
                   <img
                     src={p.img}
@@ -54,11 +60,13 @@ export function Projects() {
                     <ArrowUpRight className="size-4 text-neon" />
                   </div>
                 </div>
-              </div>
+              </button>
             </motion.div>
           ))}
         </div>
       </div>
+
+      <ProjectModal project={selected} onClose={() => setSelected(null)} />
     </section>
   );
 }

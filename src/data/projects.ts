@@ -23,18 +23,18 @@ export type Project = {
 };
 
 const yearbookPages: MediaItem[] = [
-  ...[1, 2, 3, 4].map((n) => ({ type: "image" as const, src: `/projects/yearbook/a-${n}.jpg` })),
-  ...[1, 2, 3].map((n) => ({ type: "image" as const, src: `/projects/yearbook/b-${n}.jpg` })),
+  ...[1, 2, 3].map((n) => ({ type: "image" as const, src: `/projects/yearbook/a-${n}.png` })),
+  ...[1, 2, 3, 4].map((n) => ({ type: "image" as const, src: `/projects/yearbook/b-${n}.png` })),
 ];
 
 const feedPages: MediaItem[] = [1, 2, 3, 4, 5, 6, 7].map((n) => ({
-  type: "image",
-  src: `/projects/feed/p-${n}.jpg`,
+  type: "image" as const,
+  src: `/projects/feed/p-${n}.png`,
 }));
 
 const competitionPages: MediaItem[] = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => ({
-  type: "image",
-  src: `/projects/competition/p-${n}.jpg`,
+  type: "image" as const,
+  src: `/projects/competition/p-${n}.png`,
 }));
 
 const videoClips: MediaItem[] = [1, 2, 3, 4].map((n) => ({
