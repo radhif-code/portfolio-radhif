@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Mail, ArrowUpRight } from "lucide-react";
 import type { ComponentType, SVGProps } from "react";
+import { useLang } from "@/lib/LangContext";
+import { translations } from "@/lib/i18n";
 
 const IgIcon = (p: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}>
@@ -20,48 +22,37 @@ const GhIcon = (p: SVGProps<SVGSVGElement>) => (
 
 const channels: { icon: ComponentType<SVGProps<SVGSVGElement>>; label: string; value: string; href: string }[] = [
   { icon: IgIcon, label: "Instagram", value: "@radiipppp", href: "https://instagram.com/radiipppp" },
-  { icon: LiIcon, label: "LinkedIn", value: "Radhif Aurofiq", href: "https://linkedin.com" },
+  { icon: LiIcon, label: "LinkedIn", value: "Radhif Aurofiq", href: "https://www.linkedin.com/in/radhif-aurofiq-04177b407" },
   { icon: Mail as unknown as ComponentType<SVGProps<SVGSVGElement>>, label: "Email", value: "radhifaryantaurofiq@gmail.com", href: "mailto:radhifaryantaurofiq@gmail.com" },
   { icon: GhIcon, label: "GitHub", value: "@radhif", href: "https://github.com" },
 ];
 
 export function Contact() {
+  const { lang } = useLang();
+  const t = translations[lang].contact;
+
   return (
     <section id="contact" className="relative py-32">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-neon/40 to-transparent" />
       <div className="mx-auto max-w-6xl px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="relative overflow-hidden rounded-3xl glass p-10 glow-border sm:p-16"
-        >
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+          className="relative overflow-hidden rounded-3xl glass p-10 glow-border sm:p-16">
           <div className="absolute -right-20 -top-20 size-72 rounded-full bg-neon/20 blur-3xl" />
           <div className="absolute -bottom-20 -left-20 size-72 rounded-full bg-accent/20 blur-3xl" />
 
           <div className="relative">
-            <span className="font-mono text-xs uppercase tracking-[0.3em] text-neon">/ 06 — Contact</span>
+            <span className="font-mono text-xs uppercase tracking-[0.3em] text-neon">{t.tag}</span>
             <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-6xl md:text-7xl">
-              Let's build<br />something <span className="text-gradient italic">remarkable.</span>
+              {t.heading1}<br />{t.heading2} <span className="text-gradient italic">{t.headingItalic}</span>
             </h2>
-            <p className="mt-4 max-w-lg text-muted-foreground">
-              Open to internships, freelance design, content collaboration, and IoT projects. Reach out through any channel — I reply fast.
-            </p>
+            <p className="mt-4 max-w-lg text-muted-foreground">{t.subheading}</p>
 
             <div className="mt-10 grid gap-3 sm:grid-cols-2">
               {channels.map((c, i) => (
-                <motion.a
-                  key={c.label}
-                  href={c.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                <motion.a key={c.label} href={c.href} target="_blank" rel="noreferrer"
+                  initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.08 }}
-                  className="group flex items-center justify-between rounded-2xl glass-strong px-5 py-4 transition-all hover:bg-neon-soft"
-                >
+                  className="group flex items-center justify-between rounded-2xl glass-strong px-5 py-4 transition-all hover:bg-neon-soft">
                   <div className="flex items-center gap-4">
                     <div className="grid size-10 place-items-center rounded-xl bg-neon-soft text-neon ring-1 ring-neon/30">
                       <c.icon className="size-4" />
@@ -79,8 +70,8 @@ export function Contact() {
         </motion.div>
 
         <div className="mt-12 flex flex-wrap items-center justify-between gap-4 text-xs text-muted-foreground">
-          <div>© 2026 Radhif Aryant Aurofiq · Crafted with intent.</div>
-          <div className="font-mono uppercase tracking-widest">Surabaya, ID</div>
+          <div>{t.footer}</div>
+          <div className="font-mono uppercase tracking-widest">{t.location}</div>
         </div>
       </div>
     </section>

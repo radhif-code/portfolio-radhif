@@ -1,16 +1,13 @@
 import { useState } from "react";
+import { useLang } from "@/lib/LangContext";
+import { translations } from "@/lib/i18n";
 import { motion, AnimatePresence } from "framer-motion";
 import { Activity, Bell, Cpu, Gauge, Monitor, ShieldCheck, Play, X } from "lucide-react";
 import device from "@/assets/infuguard-device.jpg";
 
 const tech = ["ESP32", "HX711", "Load Cell", "LCD I2C", "Telegram Bot", "Arduino IDE"];
 
-const features = [
-  { icon: Activity, title: "Real-time Monitoring", desc: "Continuous weight tracking of the infusion bag with sub-gram precision." },
-  { icon: ShieldCheck, title: "Blockage Detection", desc: "Detects flow obstructions automatically and triggers immediate alerts." },
-  { icon: Bell, title: "Telegram Notifications", desc: "Push critical events directly to nurses' phones through a Telegram bot." },
-  { icon: Monitor, title: "LCD Display", desc: "Local I2C LCD shows live weight, status, and warnings at the bedside." },
-];
+const featureIcons = [Activity, ShieldCheck, Bell, Monitor];
 
 const demoVideos = [
   { src: "/projects/infuguard/demo.mp4", label: "InfuGuard Demo — System Overview" },
@@ -20,6 +17,9 @@ const demoVideos = [
 export function InfuGuard() {
   const [videoOpen, setVideoOpen] = useState(false);
   const [vidIdx, setVidIdx] = useState(0);
+  const { lang } = useLang();
+  const t = translations[lang].infuguard;
+  const tf = t.features;
 
   return (
     <section id="infuguard" className="relative overflow-hidden py-32">
@@ -28,12 +28,12 @@ export function InfuGuard() {
 
       <div className="relative mx-auto max-w-6xl px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="max-w-3xl">
-          <span className="font-mono text-xs uppercase tracking-[0.3em] text-neon">/ 05 — Featured Build</span>
+          <span className="font-mono text-xs uppercase tracking-[0.3em] text-neon">{t.tag}</span>
           <h2 className="mt-4 text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl">
             Infu<span className="text-gradient italic">Guard</span>
           </h2>
           <p className="mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            A smart infusion monitoring system that helps hospital staff catch blockages and depleted bags before they become emergencies.
+            {t.subheading}
           </p>
         </motion.div>
 
@@ -54,10 +54,10 @@ export function InfuGuard() {
               </div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-2">
                 <span className="rounded-full px-3 py-1 text-xs font-semibold" style={{ background: "rgba(37,99,235,0.15)", color: "#93c5fd", border: "1px solid rgba(79,140,255,0.3)" }}>
-                  ▶ Watch Demo
+                  {t.watchDemo}
                 </span>
                 <span className="text-xs" style={{ color: "rgba(200,215,255,0.6)", fontFamily: "Montserrat, sans-serif" }}>
-                  {demoVideos.length} videos available
+                  {t.videosAvailable(demoVideos.length)}
                 </span>
               </div>
             </div>
@@ -69,9 +69,9 @@ export function InfuGuard() {
               <div className="inline-flex size-12 items-center justify-center rounded-2xl bg-neon-soft text-neon ring-1 ring-neon/30">
                 <Cpu className="size-5" />
               </div>
-              <h3 className="mt-5 font-display text-2xl font-semibold">Technology Stack</h3>
+              <h3 className="mt-5 font-display text-2xl font-semibold">{t.techTitle}</h3>
               <p className="mt-2 text-sm text-muted-foreground">
-                Hardware-first stack built on the ESP32 microcontroller, with load-cell measurement and dual-channel alerts.
+                {t.techDesc}
               </p>
             </div>
             <div className="mt-6 flex flex-wrap gap-2">
@@ -83,11 +83,11 @@ export function InfuGuard() {
         </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((f, i) => (
+          {tf.map((f, i) => (
             <motion.div key={f.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.08 }}
               className="glass relative overflow-hidden rounded-2xl p-6 glow-border-hover">
               <Gauge className="absolute -right-4 -top-4 size-20 text-neon/5" />
-              <f.icon className="size-5 text-neon" />
+              {featureIcons[i] && (() => { const Ic = featureIcons[i]; return <Ic className="size-5 text-neon" />; })()}
               <h4 className="mt-4 font-display font-semibold">{f.title}</h4>
               <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{f.desc}</p>
             </motion.div>

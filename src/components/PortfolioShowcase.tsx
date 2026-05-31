@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useLang } from "@/lib/LangContext";
+import { translations } from "@/lib/i18n";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ArrowUpRight, Play } from "lucide-react";
 import { projects as allProjects, type Project } from "../data/projects";
@@ -57,8 +59,7 @@ const docPhotos = [
   { file: "doc-8.png", caption: "Kanvas Yearbook MMXXIV Project – Designer, SMA Budi Utomo" },
 ];
 
-const TABS = ["Projects", "Certificates", "Tech Stack", "Documentation"] as const;
-type Tab = typeof TABS[number];
+type Tab = "Projects" | "Certificates" | "Tech Stack" | "Documentation";
 
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 
@@ -500,6 +501,9 @@ export function PortfolioShowcase() {
   const [activeTab, setActiveTab] = useState<Tab>("Projects");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [certIdx, setCertIdx] = useState<number | null>(null);
+  const { lang } = useLang();
+  const t = translations[lang].showcase;
+  const TABS = t.tabs as unknown as Tab[];
 
   const certMarqueeItems = certificates.map((c) => ({ src: `/certificates/${c.file}` }));
 
@@ -523,12 +527,12 @@ export function PortfolioShowcase() {
       <div className="relative mx-auto max-w-6xl px-6">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="mb-12 text-center">
-          <span className="font-mono text-xs uppercase tracking-[0.3em] text-neon">/ 04 — Showcase</span>
+          <span className="font-mono text-xs uppercase tracking-[0.3em] text-neon">{t.tag}</span>
           <h2 className="mt-3" style={{ fontFamily: "Poppins, sans-serif", fontSize: "clamp(48px,8vw,88px)", fontWeight: 800, letterSpacing: "-0.03em", color: "#0f172a", lineHeight: 1.05 }}>
-            Portfolio Showcase
+            {t.heading}
           </h2>
           <p className="mt-3 text-base max-w-md mx-auto" style={{ fontFamily: "Montserrat, sans-serif", color: "#64748b" }}>
-            Explore my journey through projects, certifications, and technical expertise.
+            {t.subheading}
           </p>
         </motion.div>
 
@@ -536,7 +540,7 @@ export function PortfolioShowcase() {
         <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }} className="flex justify-center mb-12">
           <div className="inline-flex rounded-2xl p-1.5 gap-1 flex-wrap justify-center"
             style={{ background: "rgba(79,140,255,0.06)", backdropFilter: "blur(16px)", border: "1px solid rgba(79,140,255,0.12)" }}>
-            {TABS.map((tab) => {
+            {TABS.map((tab: Tab) => {
               const active = tab === activeTab;
               return (
                 <button key={tab} onClick={() => setActiveTab(tab)}
