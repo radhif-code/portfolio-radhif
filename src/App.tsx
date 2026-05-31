@@ -3,9 +3,8 @@ import { Hero } from "./components/Hero";
 import { About } from "./components/About";
 import { Skills } from "./components/Skills";
 import { Experience } from "./components/Experience";
-import { Projects } from "./components/Projects";
+import { PortfolioShowcase } from "./components/PortfolioShowcase";
 import { InfuGuard } from "./components/InfuGuard";
-import { Certificates } from "./components/Certificates";
 import { Contact } from "./components/Contact";
 
 function App() {
@@ -16,9 +15,8 @@ function App() {
       <About />
       <Skills />
       <Experience />
-      <Projects />
+      <PortfolioShowcase />
       <InfuGuard />
-      <Certificates />
       <Contact />
     </main>
   );

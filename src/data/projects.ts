@@ -32,7 +32,7 @@ const feedPages: MediaItem[] = [1, 2, 3, 4, 5, 6, 7].map((n) => ({
   src: `/projects/feed/p-${n}.png`,
 }));
 
-const competitionPages: MediaItem[] = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => ({
+const competitionPages: MediaItem[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => ({
   type: "image" as const,
   src: `/projects/competition/p-${n}.png`,
 }));
@@ -44,6 +44,7 @@ const videoClips: MediaItem[] = [1, 2, 3, 4].map((n) => ({
 
 const infuguardMedia: MediaItem[] = [
   { type: "video", src: "/projects/infuguard/demo.mp4" },
+  { type: "video", src: "/projects/infuguard/demo2.mp4" },
 ];
 
 export const projects: Project[] = [
