@@ -2,7 +2,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { useLang } from "@/lib/LangContext";
 import { translations } from "@/lib/i18n";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, ArrowUpRight, Play } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, ArrowUpRight, Play, Activity, Bell, Cpu, Gauge, Monitor, ShieldCheck } from "lucide-react";
+import device from "@/assets/infuguard-device.jpg";
 import { projects as allProjects, type Project } from "../data/projects";
 
 import photoshop from "@/assets/tools/photoshop.png";
@@ -59,7 +60,15 @@ const docPhotos = [
   { file: "doc-8.png", caption: "Kanvas Yearbook MMXXIV Project – Designer, SMA Budi Utomo" },
 ];
 
-type Tab = "Projects" | "Certificates" | "Tech Stack" | "Documentation";
+type Tab = "Projects" | "Certificates" | "Tech Stack" | "Documentation" | "InfuGuard";
+
+// ─── INFUGUARD DATA ───────────────────────────────────────────────────────────
+const infuTech = ["ESP32", "HX711", "Load Cell", "LCD I2C", "Telegram Bot", "Arduino IDE"];
+const infuFeatureIcons = [Activity, ShieldCheck, Bell, Monitor];
+const demoVideos = [
+  { src: "/projects/infuguard/demo.mp4", label: "InfuGuard Demo — System Overview" },
+  { src: "/projects/infuguard/demo2.mp4", label: "InfuGuard Demo — Live Operation" },
+];
 
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 
@@ -501,6 +510,8 @@ export function PortfolioShowcase() {
   const [activeTab, setActiveTab] = useState<Tab>("Projects");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [certIdx, setCertIdx] = useState<number | null>(null);
+  const [videoOpen, setVideoOpen] = useState(false);
+  const [vidIdx, setVidIdx] = useState(0);
   const { lang } = useLang();
   const t = translations[lang].showcase;
   const TABS = t.tabs as unknown as Tab[];
@@ -649,6 +660,80 @@ export function PortfolioShowcase() {
             )}
 
             {/* ── DOCUMENTATION ── */}
+            {/* ── INFUGUARD ── */}
+            {activeTab === "InfuGuard" && (
+              <div className="flex flex-col gap-8">
+                <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+                  {/* Device image → opens video */}
+                  <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}
+                    className="relative overflow-hidden rounded-3xl group cursor-pointer"
+                    style={{ border: "1px solid rgba(79,140,255,0.15)", boxShadow: "0 4px 32px rgba(79,140,255,0.08)" }}
+                    onClick={() => { setVidIdx(0); setVideoOpen(true); }}>
+                    <div className="relative overflow-hidden rounded-3xl">
+                      <img src={device} alt="InfuGuard prototype" className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                      <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(8,15,40,0.75) 0%, transparent 60%)" }} />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="grid size-16 place-items-center rounded-full transition-all duration-300 group-hover:scale-110"
+                          style={{ background: "rgba(37,99,235,0.88)", boxShadow: "0 8px 32px rgba(37,99,235,0.4)" }}>
+                          <Play className="size-7 text-white ml-1" />
+                        </div>
+                      </div>
+                      <div className="absolute bottom-4 left-4 flex items-center gap-2">
+                        <span className="rounded-full px-3 py-1 text-xs font-semibold"
+                          style={{ background: "rgba(37,99,235,0.15)", color: "#93c5fd", border: "1px solid rgba(79,140,255,0.3)" }}>
+                          {translations[lang].infuguard.watchDemo}
+                        </span>
+                        <span className="text-xs" style={{ color: "rgba(200,215,255,0.6)", fontFamily: "Montserrat, sans-serif" }}>
+                          {translations[lang].infuguard.videosAvailable(demoVideos.length)}
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Tech stack card */}
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
+                    className="flex flex-col justify-between rounded-3xl p-8"
+                    style={{ background: "rgba(255,255,255,0.8)", backdropFilter: "blur(20px)", border: "1px solid rgba(79,140,255,0.12)" }}>
+                    <div>
+                      <div className="inline-flex size-12 items-center justify-center rounded-2xl"
+                        style={{ background: "rgba(79,140,255,0.1)", color: "#2563eb", boxShadow: "inset 0 0 0 1px rgba(79,140,255,0.2)" }}>
+                        <Cpu className="size-5" />
+                      </div>
+                      <h3 className="mt-5 text-xl font-bold" style={{ fontFamily: "Poppins, sans-serif", color: "#0f172a" }}>
+                        {translations[lang].infuguard.techTitle}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed" style={{ color: "#64748b", fontFamily: "Montserrat, sans-serif" }}>
+                        {translations[lang].infuguard.techDesc}
+                      </p>
+                    </div>
+                    <div className="mt-6 flex flex-wrap gap-2">
+                      {infuTech.map((tech) => (
+                        <span key={tech} className="rounded-full px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider"
+                          style={{ background: "rgba(79,140,255,0.08)", color: "#2563eb", border: "1px solid rgba(79,140,255,0.2)" }}>
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Feature cards */}
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  {translations[lang].infuguard.features.map((f, i) => (
+                    <motion.div key={f.title} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: i * 0.08 }}
+                      className="relative overflow-hidden rounded-2xl p-6"
+                      style={{ background: "rgba(255,255,255,0.8)", backdropFilter: "blur(20px)", border: "1px solid rgba(79,140,255,0.1)" }}
+                      >
+                      <Gauge className="absolute -right-4 -top-4 size-20" style={{ color: "rgba(79,140,255,0.05)" }} />
+                      {infuFeatureIcons[i] && (() => { const Ic = infuFeatureIcons[i]; return <Ic className="size-5" style={{ color: "#2563eb" }} />; })()}
+                      <h4 className="mt-4 font-semibold text-sm" style={{ fontFamily: "Poppins, sans-serif", color: "#0f172a" }}>{f.title}</h4>
+                      <p className="mt-1.5 text-xs leading-relaxed" style={{ color: "#64748b", fontFamily: "Montserrat, sans-serif" }}>{f.desc}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {activeTab === "Documentation" && (
               <div className="flex flex-col gap-8">
                 <p className="text-sm text-center" style={{ color: "#64748b", fontFamily: "Montserrat, sans-serif" }}>
@@ -691,6 +776,40 @@ export function PortfolioShowcase() {
 
       <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
       <CertModal startIdx={certIdx} onClose={() => setCertIdx(null)} />
+
+      {/* InfuGuard video modal */}
+      <AnimatePresence>
+        {videoOpen && (
+          <motion.div key="vid-bg" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+            style={{ background: "rgba(3,7,18,0.94)", backdropFilter: "blur(24px)" }}
+            onClick={() => setVideoOpen(false)}>
+            <motion.div key="vid-panel"
+              initial={{ opacity: 0, scale: 0.95, y: 32 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 24 }}
+              transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-3xl overflow-hidden"
+              style={{ borderRadius: 24, boxShadow: "0 0 0 1px rgba(79,140,255,0.2), 0 32px 80px rgba(79,140,255,0.18)" }}
+              onClick={(e) => e.stopPropagation()}>
+              <button onClick={() => setVideoOpen(false)} className="absolute right-3 top-3 z-20 grid size-9 place-items-center rounded-full" style={{ background: "rgba(0,0,0,0.4)", color: "white" }}>
+                <X className="size-4" />
+              </button>
+              <video key={demoVideos[vidIdx].src} src={demoVideos[vidIdx].src} controls autoPlay playsInline
+                className="w-full" style={{ display: "block", background: "#060d24" }} />
+              {demoVideos.length > 1 && (
+                <div className="flex gap-2 p-3" style={{ background: "rgba(6,13,36,0.98)" }}>
+                  {demoVideos.map((v, vi) => (
+                    <button key={vi} onClick={() => setVidIdx(vi)}
+                      className="flex-1 rounded-xl px-3 py-2 text-xs font-semibold text-left transition-all"
+                      style={{ background: vi === vidIdx ? "rgba(79,140,255,0.18)" : "rgba(255,255,255,0.04)", color: vi === vidIdx ? "#93c5fd" : "#64748b", border: vi === vidIdx ? "1px solid rgba(79,140,255,0.35)" : "1px solid rgba(255,255,255,0.06)", fontFamily: "Montserrat, sans-serif" }}>
+                      {v.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
