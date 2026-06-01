@@ -25,6 +25,7 @@ const certificates = [
   { file: "cert-15.png", year: "2023", title: "Certificate", org: "2023" },
   { file: "cert-16.png", year: "2023", title: "Certificate", org: "2023" },
   { file: "cert-02.png", year: "2023", title: "Deutsche Woche XXVII", org: "Universitas Negeri Surabaya" },
+  { file: "cert-17.png", year: "2023", title: "Piagam Penghargaan Paskibra", org: "Kecamatan Perak – HUT RI ke-78" },
 ];
 
 function CertModal({ cert, onClose }: { cert: typeof certificates[0] | null; onClose: () => void }) {

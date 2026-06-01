@@ -58,6 +58,7 @@ const docPhotos = [
   { file: "doc-6.png", caption: "Klinik PKM 2026 – Penguatan & Pendampingan Program Kreativitas Mahasiswa" },
   { file: "doc-7.png", caption: "Akreditasi Program Studi S1 Bisnis Digital FEB UNESA – Maret 2026" },
   { file: "doc-8.png", caption: "Kanvas Yearbook MMXXIV Project – Designer, SMA Budi Utomo" },
+  { file: "doc-9.png", caption: "Yearbook Crew – Tim Buku Tahunan SMA Budi Utomo, \"from story to history\"" },
 ];
 
 type Tab = "Projects" | "Certificates" | "Tech Stack" | "Documentation" | "InfuGuard";
